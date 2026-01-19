@@ -11,13 +11,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build backend image
-        run: docker build -t  game_selector_backend:latest .
-
-      - name: Build frontend image
-        run: docker build -t  game_selector_frontend:latest ./frontend
-
       - name: Deploy application
-        run: |
-          docker compose down
-          docker compose up -d
+        run: docker compose up -d --build --remove-orphans
