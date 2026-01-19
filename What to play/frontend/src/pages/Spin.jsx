@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import Modal from '../components/Modal';
 import './Spin.css';
 
 export default function Spin() {
@@ -21,6 +22,8 @@ export default function Spin() {
     const rotationRef = useRef(0);
     const requestRef = useRef();
     const speedRef = useRef(0);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // Fetch initial data
     useEffect(() => {
@@ -48,10 +51,18 @@ export default function Spin() {
             .catch(console.error);
     }, [selectedCollectionId]);
 
-    // Draw wheel whenever candidates change
+    // Draw wheel whenever candidates change or modal opens
     useEffect(() => {
-        drawWheel();
-    }, [candidates, allGames]); // drawWheel depends on candidates and game titles lookup
+        if (isModalOpen) {
+            // Slight delay to ensure canvas is mounted
+            setTimeout(() => {
+                drawWheel();
+                if (!isSpinning && !winner) {
+                    spin();
+                }
+            }, 100);
+        }
+    }, [candidates, allGames, isModalOpen]);
 
     const toggleCandidate = (id) => {
         const next = new Set(candidates);
@@ -90,8 +101,6 @@ export default function Spin() {
         const items = getWheelItems();
 
         ctx.clearRect(0, 0, width, height);
-
-        // ... (rest of drawing logic)
 
         if (items.length === 0) {
             ctx.fillStyle = '#94a3b8';
@@ -148,6 +157,13 @@ export default function Spin() {
         ctx.stroke();
     };
 
+    const handleSpinStart = () => {
+        if (candidates.size === 0) return;
+        setIsModalOpen(true);
+        setWinner(null);
+        // spin() will be called by useEffect when modal opens
+    };
+
     const spin = () => {
         const items = getWheelItems();
         if (items.length === 0 || isSpinning) return;
@@ -190,6 +206,13 @@ export default function Spin() {
         setWinner(items[winningIndex]);
     };
 
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setIsSpinning(false);
+        setWinner(null);
+        if (requestRef.current) cancelAnimationFrame(requestRef.current);
+    };
+
     // Cleanup animation
     useEffect(() => {
         return () => cancelAnimationFrame(requestRef.current);
@@ -204,21 +227,7 @@ export default function Spin() {
             <h1>Spin the Wheel</h1>
 
             <div className="spin-layout">
-                <div className="wheel-container">
-                    <canvas
-                        ref={canvasRef}
-                        className="wheel-canvas"
-                    />
-                    {winner && (
-                        <div className="winner-overlay">
-                            <h2>Winner!</h2>
-                            <div className="winner-name">{winner}</div>
-                            <button onClick={() => setWinner(null)}>Dismiss</button>
-                        </div>
-                    )}
-                </div>
-
-                <div className="spin-controls card">
+                <div className="spin-controls card" style={{ maxWidth: '600px', margin: '0 auto', width: '100%' }}>
                     <div className="control-group">
                         <label>Load Collection:</label>
                         <select
@@ -260,13 +269,36 @@ export default function Spin() {
 
                     <button
                         className="primary big-btn"
-                        onClick={spin}
-                        disabled={isSpinning || candidates.size === 0}
+                        onClick={handleSpinStart}
+                        disabled={candidates.size === 0}
                     >
-                        {isSpinning ? 'Spinning...' : 'SPIN!'}
+                        SPIN!
                     </button>
                 </div>
             </div>
+
+            <Modal
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+                title="Running Wheel"
+            >
+                <div className="wheel-container">
+                    <canvas
+                        ref={canvasRef}
+                        className="wheel-canvas"
+                    />
+                    {winner && (
+                        <div className="winner-overlay">
+                            <h2>Winner!</h2>
+                            <div className="winner-name">{winner}</div>
+                            <div className="modal-actions">
+                                <button className="primary" onClick={spin}>Spin Again</button>
+                                <button className="secondary" onClick={handleCloseModal}>Close</button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </Modal>
         </div>
     );
 }
