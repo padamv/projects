@@ -28,8 +28,6 @@ services:
       DATABASE_URL: postgresql://user:password@db:5515/games_db
     ports:
       - "8000:8000"
-    volumes:
-      - .:/app # Enable hot reloading for development, though Dockerfile copies code too
 
   frontend:
     build: ./frontend
