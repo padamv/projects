@@ -1,0 +1,118 @@
+.collections-page {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.create-collection-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.creation-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .creation-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.creation-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.name-input {
+    font-size: 1.2rem;
+    padding: 0.75rem;
+}
+
+.selection-count {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.game-selection-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    height: 300px;
+}
+
+.filter-input {
+    margin-bottom: 0.5rem;
+}
+
+.scrollable-list {
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--bg-secondary);
+}
+
+.game-select-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.game-select-item:last-child {
+    border-bottom: none;
+}
+
+.game-select-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.game-select-item.selected {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.game-select-item input {
+    pointer-events: none;
+    /* Let parent handle click */
+}
+
+.collections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.collection-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.col-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.col-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.col-meta {
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.spin-btn {
+    margin-top: auto;
+    width: 100%;
+}

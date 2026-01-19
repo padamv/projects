@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Selector</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header>
+        <h1>Game Selector</h1>
+        <nav>
+            <button onclick="router('games')" id="nav-games" class="active">Library</button>
+            <button onclick="router('collections')" id="nav-collections">Collections</button>
+            <button onclick="router('spin')" id="nav-spin">Spin</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- GAMES VIEW -->
+        <div id="view-games" class="view active">
+            <div class="card">
+                <h2>Add Game</h2>
+                <div style="display: grid; grid-template-columns: 2fr 1fr 2fr auto; gap: 1rem; align-items: end;">
+                    <div class="form-group" style="margin:0">
+                        <label>Title</label>
+                        <input type="text" id="game-title" placeholder="e.g. Super Mario">
+                    </div>
+                    <div class="form-group" style="margin:0">
+                        <label>Type</label>
+                        <input type="text" id="game-type" placeholder="e.g. Platform">
+                    </div>
+                    <div class="form-group" style="margin:0">
+                        <label>Tags</label>
+                        <input type="text" id="game-tags" placeholder="e.g. Fun, Switch">
+                    </div>
+                    <button class="primary" onclick="addGame()">Add</button>
+                </div>
+            </div>
+
+            <div class="card" style="padding: 1rem; display:flex; gap:1rem; align-items:center;">
+                <input type="text" id="filter-games" placeholder="Search your library..." oninput="renderGames()"
+                    style="max-width: 300px;">
+                <span style="font-size:0.9rem; color:var(--text-secondary)">Manage your library of games here.</span>
+            </div>
+
+            <div id="games-list" class="game-list">
+                <!-- Games render here -->
+            </div>
+        </div>
+
+        <!-- COLLECTIONS VIEW -->
+        <div id="view-collections" class="view">
+            <div class="card">
+                <h2>Create Collection</h2>
+                <div class="form-group">
+                    <label>Collection Name</label>
+                    <input type="text" id="collection-name" placeholder="e.g. Party Games">
+                </div>
+
+                <div class="form-group">
+                    <label>Select Games</label>
+                    <input type="text" id="create-collection-filter" placeholder="Filter games..."
+                        oninput="renderCollectionCreationList()" style="margin-bottom: 0.5rem;">
+                    <div id="create-collection-games">
+                        <!-- Checkbox list of games -->
+                    </div>
+                </div>
+
+                <button class="primary" onclick="createCollection()">Create Collection</button>
+            </div>
+
+            <div id="collections-list" class="collection-list">
+                <!-- Collections render here -->
+            </div>
+        </div>
+
+        <!-- SPIN VIEW -->
+        <div id="view-spin" class="view">
+            <div class="selection-area">
+                <h2 style="display:flex; justify-content:space-between; align-items:center;">
+                    Wheel Setup
+                    <button class="danger" style="font-size:0.8rem" onclick="clearSpinSelection()">Clear</button>
+                </h2>
+
+                <div style="display:flex; gap: 1rem; align-items:center; margin-bottom: 1rem;">
+                    <select id="collection-select" onchange="loadCollectionToSpin(this.value)" style="max-width:250px;">
+                        <option value="">Load from Collection...</option>
+                    </select>
+                    <span class="text-secondary" style="font-size:0.9rem">or select manually below</span>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="spin-filter" placeholder="Filter candidates..."
+                        oninput="renderSpinCandidates()">
+                </div>
+
+                <div id="spin-candidates"
+                    style="max-height: 200px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem;">
+                    <!-- Checks for games -->
+                </div>
+            </div>
+
+            <div id="wheel-container">
+                <canvas id="wheel" width="500" height="500"></canvas>
+                <div id="winner-display"></div>
+                <button id="spin-btn" class="primary" onclick="spinWheel()">SPIN THE WHEEL</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

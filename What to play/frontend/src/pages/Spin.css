@@ -1,0 +1,159 @@
+.spin-page {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    height: 100%;
+}
+
+.spin-layout {
+    display: flex;
+    flex-direction: column-reverse;
+    /* Controls below wheel on mobile */
+    gap: 2rem;
+    align-items: center;
+    /* Center everything on mobile */
+}
+
+@media (min-width: 900px) {
+    .spin-layout {
+        flex-direction: row;
+        /* Side-by-side on desktop */
+        align-items: flex-start;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+    }
+}
+
+.spin-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    min-height: 400px;
+}
+
+@media (min-width: 900px) {
+    .spin-controls {
+        height: 500px;
+        /* Fixed height on desktop to match wheel area roughly */
+    }
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.game-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+    overflow: hidden;
+    /* For nested scroll */
+    min-height: 200px;
+}
+
+.checklist-scroll {
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--bg-secondary);
+}
+
+.checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    /* Larger tap area */
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.checklist-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.checklist-item input {
+    pointer-events: none;
+    transform: scale(1.2);
+    /* Easier to see */
+}
+
+.big-btn {
+    font-size: 1.5rem;
+    padding: 1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-top: auto;
+    touch-action: manipulation;
+    /* Faster tap response */
+}
+
+.wheel-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 1 / 1;
+}
+
+.wheel-canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+}
+
+.winner-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(15, 23, 42, 0.95);
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    text-align: center;
+    border: 2px solid var(--primary-color);
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 0 50px rgba(59, 130, 246, 0.5);
+    z-index: 10;
+    width: 80%;
+    max-width: 300px;
+}
+
+.winner-overlay h2 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.winner-name {
+    font-size: 2rem;
+    /* Slightly smaller for mobile safety */
+    font-weight: 800;
+    margin: 1rem 0;
+    color: white;
+    word-wrap: break-word;
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}

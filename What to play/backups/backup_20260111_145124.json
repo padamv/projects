@@ -1,0 +1,33 @@
+{
+    "games": [
+        {
+            "id": 1,
+            "title": "Super Mario",
+            "type": "Platform",
+            "tags": "Fun, Nintendo"
+        },
+        {
+            "id": 2,
+            "title": "Elden Ring",
+            "type": "RPG",
+            "tags": "Hard, Action"
+        },
+        {
+            "id": 3,
+            "title": "Mortal Kombat",
+            "type": "Video game",
+            "tags": "PlayStation, fighting"
+        }
+    ],
+    "collections": [
+        {
+            "id": 1,
+            "name": "Weekend Fun"
+        },
+        {
+            "id": 2,
+            "name": "fight"
+        }
+    ],
+    "links": []
+}

@@ -1,0 +1,14 @@
+.collection-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: 100%;
+}
+
+.collection-form .scrollable-list {
+    height: 250px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow-y: auto;
+    background-color: var(--bg-secondary);
+}

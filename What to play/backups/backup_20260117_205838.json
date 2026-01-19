@@ -1,0 +1,74 @@
+{
+    "games": [
+        {
+            "id": 1,
+            "title": "Super Mario",
+            "type": "Platform",
+            "tags": "Fun, Nintendo"
+        },
+        {
+            "id": 2,
+            "title": "Elden Ring",
+            "type": "RPG",
+            "tags": "Hard, Action"
+        },
+        {
+            "id": 3,
+            "title": "Mortal Kombat",
+            "type": "Video game",
+            "tags": "PlayStation, fighting"
+        },
+        {
+            "id": 4,
+            "title": "Zelda",
+            "type": "Adventure",
+            "tags": "Switch"
+        },
+        {
+            "id": 5,
+            "title": "twst",
+            "type": "PC",
+            "tags": "test"
+        }
+    ],
+    "collections": [
+        {
+            "name": "Weekend Fun",
+            "id": 1
+        },
+        {
+            "name": "fight",
+            "id": 2
+        },
+        {
+            "name": "Nintendo Favs",
+            "id": 3
+        },
+        {
+            "name": "test",
+            "id": 5
+        }
+    ],
+    "links": [
+        {
+            "game_id": 1,
+            "collection_id": 3
+        },
+        {
+            "game_id": 4,
+            "collection_id": 3
+        },
+        {
+            "game_id": 1,
+            "collection_id": 5
+        },
+        {
+            "game_id": 2,
+            "collection_id": 5
+        },
+        {
+            "game_id": 4,
+            "collection_id": 5
+        }
+    ]
+}
