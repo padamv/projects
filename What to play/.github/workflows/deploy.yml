@@ -1,0 +1,44 @@
+name: CI/CD Deploy to Synology NAS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to NAS Registry
+      run: |
+        docker login Home_Nas:5500 \
+          -u ${{ secrets.REGISTRY_USER }} \
+          -p ${{ secrets.REGISTRY_PASS }}
+
+    - name: Build and push backend
+      run: |
+        docker build -t Home_Nas:5500/whattoplay-backend:latest .
+        docker push Home_Nas:5500/whattoplay-backendd:latest
+
+    - name: Build and push frontend
+      run: |
+        docker build -t Home_Nas:5500/whattoplay-frontend:latest ./frontend
+        docker push Home_Nas:5500/whattoplay-frontend:latest
+
+    - name: Deploy to NAS
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: NAS_IP
+        username: deploy
+        key: ${{ secrets.NAS_SSH_KEY }}
+        script: |
+          cd /volume1/docker/whattoplay
+          docker compose pull
+          docker compose up -d
