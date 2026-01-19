@@ -1,4 +1,4 @@
-name: CI/CD Deploy to Synology NAS
+name: LAN CI/CD (Synology)
 
 on:
   push:
@@ -6,39 +6,18 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-
+  deploy:
+    runs-on: self-hosted
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Docker
-      uses: docker/setup-buildx-action@v3
+      - name: Build backend image
+        run: docker build -t  game_selector_backend:latest .
 
-    - name: Login to NAS Registry
-      run: |
-        docker login Home_Nas:5500 \
-          -u ${{ secrets.REGISTRY_USER }} \
-          -p ${{ secrets.REGISTRY_PASS }}
+      - name: Build frontend image
+        run: docker build -t  game_selector_frontend:latest ./frontend
 
-    - name: Build and push backend
-      run: |
-        docker build -t Home_Nas:5500/whattoplay-backend:latest .
-        docker push Home_Nas:5500/whattoplay-backendd:latest
-
-    - name: Build and push frontend
-      run: |
-        docker build -t Home_Nas:5500/whattoplay-frontend:latest ./frontend
-        docker push Home_Nas:5500/whattoplay-frontend:latest
-
-    - name: Deploy to NAS
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: NAS_IP
-        username: deploy
-        key: ${{ secrets.NAS_SSH_KEY }}
-        script: |
-          cd /volume1/docker/whattoplay
-          docker compose pull
+      - name: Deploy application
+        run: |
+          docker compose down
           docker compose up -d
